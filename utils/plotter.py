@@ -388,7 +388,7 @@ class Plotter:
             kwargs = {}
             if legends is not None:
                 kwargs = {"label": legends[i]}
-            ax.plot(ts, data,  **kwargs)
+            ax.plot(ts, data, **kwargs)
             if obs_data is not None:
                 ax.plot(obs_data[0], obs_data[1], "x", label="Observation")
                 obs_data = None
@@ -462,6 +462,7 @@ class Plotter:
         cmap: Union[str, None] = None,
         extend: Union[str, None] = None,
         stations: Union[np.ndarray, None] = None,
+        zorder_land: int = 15,
     ) -> tuple[Figure, Axes]:
         """It creates a bathymetry plot with standard formatting.
 
@@ -528,7 +529,7 @@ class Plotter:
             edgecolors="none",
             transform=cls.orig_projection,
             cmap=cmap,
-            zorder=-1,
+            zorder=1,
         )
         kwargs = {}
         if extend is not None:
@@ -543,7 +544,7 @@ class Plotter:
         ax.coastlines(
             resolution=cls.coast_resolution, linewidth=cls.coast_width, zorder=10
         )
-        ax.add_feature(cfeature.LAND, facecolor=cls.land_color, zorder=15)
+        ax.add_feature(cfeature.LAND, facecolor=cls.land_color, zorder=zorder_land)
         cls.map_grid(ax)
 
         if stations is not None:

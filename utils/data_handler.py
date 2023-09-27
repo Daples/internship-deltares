@@ -26,9 +26,11 @@ class DataHandler:
         return data.isel(time=slice(spin_up_steps, None))
 
     @classmethod
-    def read_noos(cls, path: str, s: slice = slice(None, None)) -> tuple[np.ndarray, np.ndarray]:
+    def read_noos(
+        cls, path: str, s: slice = slice(None, None)
+    ) -> tuple[np.ndarray, np.ndarray]:
         """It reads a noos file.
-        
+
         Parameters
         ----------
         path: str
@@ -54,3 +56,33 @@ class DataHandler:
             times = pd.to_datetime(times, format="%Y%m%d%H%M%S").to_numpy()
             values = np.array(values)
             return times[s], values[s]
+
+    @classmethod
+    def read_xyn(cls, locations_file: str) -> tuple[list, ...]:
+        """Read a .xyn locations config file from D-FlowFM.
+
+        Parameters
+        ----------
+        locations_file: str
+            The path to the .xyn file.
+
+        Returns
+        -------
+        list[float]
+            The x coordinates (longitudes) of the stations.
+        list[float]
+            The y coordinates (latitudes) of the stations.
+        list[str]
+            The list of names for each station.
+        """
+
+        xs = []
+        ys = []
+        stations = []
+        with open(locations_file, "r") as file:
+            for line in file:
+                x, y, name = line.split()
+                xs.append(float(x))
+                ys.append(float(y))
+                stations.append(name.strip("'"))
+        return xs, ys, stations
