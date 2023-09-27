@@ -19,7 +19,14 @@ class Observer:
 
     @classmethod
     def get_land(cls) -> PreparedGeometry:
-        """From https://gist.github.com/pelson/9785576."""
+        """From https://gist.github.com/pelson/9785576. It returns the land geometry on
+        earth.
+
+        Returns
+        -------
+        shapely.preprared.PreparedGeometry
+            The land geometry.
+        """
 
         land_shp_fname = shpreader.natural_earth(
             resolution="50m", category="physical", name="land"
@@ -29,13 +36,22 @@ class Observer:
 
     @staticmethod
     def _get_name(x: float, y: float) -> str:
-        """It returns a standard name based on coordinates."""
+        """It returns a standard name based on coordinates.
+
+        Parameters
+        ----------
+        x: float
+            The longitude.
+        y: float
+            The latutude.
+
+        Returns
+        -------
+        str
+            The standard name.
+        """
 
         return f"lon{x}_lat{y}"
-
-    # @classmethod
-    # def is_land(cls, x: float, y: float) -> bool:
-    #     return land.contains(sgeom.Point(x, y))
 
     @classmethod
     def generate_locations(
@@ -48,6 +64,36 @@ class Observer:
         dy: float,
         locs_output: str,
     ) -> tuple[np.ndarray, ...]:
+        """It generates a grid of observation stations and writes them to the specified
+        .xyn file for D-FlowFM.
+
+        Parameters
+        ----------
+        x_min: float
+            The minumum longitude.
+        x_max: float
+            The maximum longitude.
+        y_min: float
+            The minimum latitude.
+        y_max: float
+            The maximum latitude.
+        dx: float
+            The spacing for the grid in the x-direction.
+        dy: float
+            The spacing for the grid in the y-direction.
+        locs_output: str
+            The path of the output .xyn file.
+
+        Returns
+        -------
+        numpy.ndarray
+            The array of x-coordinates.
+        numpy.ndarray
+            The array of y-coordinates.
+        numpy.ndarray
+            The array of station names.
+        """
+
         ys, xs = np.mgrid[y_min : y_max + dy : dy, x_min : x_max + dx : dx]
         land = cls.get_land()
         mask = vec.contains(land, xs, ys)
@@ -62,27 +108,8 @@ class Observer:
         return xs, ys, mask.astype(float)
 
 
-xs, ys, mask = Observer.generate_locations(-180, 180, -90, 90, 15, 15, "test.xyn")
+# # Test
+# xs, ys, mask = Observer.generate_locations(-180, 180, -90, 90, 15, 15, "test.xyn")
 # Plotter.plot_map(
 #     xs, ys, mask, size=10, zorder_land=-1, cmap="bwr", path="land_grid.pdf"
 # )
-
-# plt.figure(figsize=(12, 12))
-# ax = plt.axes(projection=ccrs.PlateCarree())
-# cmap = mcolors.ListedColormap(["blue", "green"])
-
-
-# ax.scatter(
-#     xs,
-#     ys,
-#     s=(mask + 0.5) * 20,
-#     c=mask + 1,
-#     cmap=cmap,
-#     edgecolor="none",
-#     transform=ccrs.PlateCarree(),
-# )
-
-# ax.add_geometries(
-#     [Observer.get_land()], ccrs.PlateCarree(), facecolor="none", edgecolor="black"
-# )
-# plt.show()
