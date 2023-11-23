@@ -28,7 +28,7 @@ def get_rmses(
 
     rmses = np.zeros(len_clip - 1)
     for h in range(len_clip - 1):
-        rmses[h] = np.std(clipped_data_full[h:] - data_clipped[h:], ddof=1)
+        rmses[h] = np.sqrt(((clipped_data_full[h:] - data_clipped[h:]) ** 2).mean())
 
     return rmses
 

@@ -25,7 +25,8 @@ class Plotter:
         The keyword arguments for all plots.
     """
 
-    _folder: str = os.path.join(os.getcwd(), "figs")
+    _figs_folder: str = "figs"
+    _folder: Callable[[str], str] = lambda folder: os.path.join(os.getcwd(), folder)
     args: list[Any] = ["k-"]
     kwargs: dict[str, Any] = {"markersize": 3}
     figsize_standard: tuple[int, int] = (8, 5)
@@ -36,6 +37,7 @@ class Plotter:
     font_size: int = 14
     bands_alpha: float = 0.2
     grid_alpha: float = 0.7
+    ensemble_alpha: float = 0.2
     grid_color: str = "lightgray"
     dpi: int = 200
     h_label: str = "$h\ (\mathrm{m})$"
@@ -50,6 +52,18 @@ class Plotter:
     coast_resolution: str = "50m"
     coast_width: float = 0.5
     station_color: str = "deeppink"
+
+    @classmethod
+    def change_folder(cls, new_folder: str) -> None:
+        """It changes the default figs folder name.
+
+        Parameters
+        ----------
+        new_folder: str
+            The new folder name.
+        """
+
+        cls._figs_folder = new_folder
 
     @staticmethod
     def __clear__() -> None:
@@ -77,9 +91,9 @@ class Plotter:
         """
 
         ax.legend(
-            bbox_to_anchor=(0, 1.02, 1, 0.2),
-            loc="lower right",
-            ncol=3,
+            bbox_to_anchor=(0, 1, 1, 0.2),
+            loc="upper right",
+            ncol=4,
         )
 
     @classmethod
@@ -145,10 +159,11 @@ class Plotter:
             The path with the added folder.
         """
 
-        if not os.path.exists(cls._folder):
-            os.mkdir(cls._folder)
+        check = cls._folder(cls._figs_folder)
+        if not os.path.exists(check):
+            os.mkdir(check)
 
-        return os.path.join(cls._folder, path)
+        return os.path.join(check, path)
 
     @staticmethod
     def get_sizes(z: np.ndarray, size_lims: tuple[float, float]) -> np.ndarray:
@@ -361,7 +376,7 @@ class Plotter:
         cls,
         ts_list: list,
         data_list: list[np.ndarray],
-        loc_name: list[str],
+        loc_name: str,
         title_func: Callable,
         legends: Union[list[str], None] = None,
         obs_data: Union[list[np.ndarray], None] = None,
@@ -375,7 +390,7 @@ class Plotter:
         cls.__setup_config__()
 
         n_series = len(ts_list)
-        # colors = ["k", "r", "b"]
+        colors = ["k", "g", "b"]
         fig, ax = plt.subplots(nrows=1, ncols=1, figsize=cls.figsize_standard)
 
         loop = range(n_series)
@@ -387,11 +402,22 @@ class Plotter:
 
             kwargs = {}
             if legends is not None:
-                kwargs = {"label": legends[i]}
-            ax.plot(ts, data, **kwargs)
+                kwargs = {"label": legends[i], "color": colors[i]}
+            # if i == 0:
+            #     kwargs |= {"color": "k", "zorder": 3}
+            # else:
+            #     kwargs |= {"alpha": cls.ensemble_alpha, "zorder": -1}
             if obs_data is not None:
-                ax.plot(obs_data[0], obs_data[1], "x", label="Observation")
+                ax.plot(
+                    obs_data[0],
+                    obs_data[1],
+                    "x",
+                    label="Observation",
+                    zorder=4,
+                    color="r",
+                )
                 obs_data = None
+            ax.plot(ts, data, **kwargs)
 
         ax.set_xlabel(cls.t_label)
         ax.set_ylabel(cls.h_label)
@@ -457,12 +483,16 @@ class Plotter:
         ylabel: str = "Latitude",
         title: Union[str, None] = None,
         size_lims: tuple[float, float] = (0.001, 0.1),
-        size: Union[float, np.ndarray, None] = None,
+        flip_lims: bool = False,
+        size: Union[float, np.ndarray, list, None] = None,
         dpi: Union[int, None] = None,
         cmap: Union[str, None] = None,
-        extend: Union[str, None] = None,
+        vmin: float | None = None,
+        vmax: float | None = None,
         stations: Union[np.ndarray, None] = None,
         zorder_land: int = 15,
+        draw_colorbar: bool = True,
+        extent: tuple[float, float, float, float] | None = None,
     ) -> tuple[Figure, Axes]:
         """It creates a bathymetry plot with standard formatting.
 
@@ -490,10 +520,16 @@ class Plotter:
             The figure's DPI for saving. Default: None
         cmap: str | None, optional
             If a different colormap is required.
-        extend: str | None, optional
-            Whether the colorbar should be extended or not. Default: False
+        vmin: float | None, optional
+            The minimum value for the colorbar. Default: None
+        vmax: float | None, optional
+            The maximum value for the colorbar. Default: None
         stations: numpy.ndarray | None, optional
             Measuring stations to plot on the map. Array (lon, lat). Default: None
+        draw_colorbar: bool, optional
+            If the colorbar should be drawn. Default: True
+        extent: tuple[float, float, float, float] | None, optional
+            The GeoAxes extent. Default: None
 
         Returns
         -------
@@ -514,13 +550,22 @@ class Plotter:
             figsize=cls.figsize_map,
             subplot_kw=dict(projection=cls.display_projection),
         )
+
         ax = cast(GeoAxes, ax)
+        ax.set_extent(extent, crs=cls.orig_projection)
         if size is None:
             size = cls.get_sizes(z, size_lims)
+            if flip_lims:
+                size = size[::-1]
 
         if cmap is None:
             cmap = cls.color_map
 
+        kwargs = {}
+        if vmin is not None:
+            kwargs |= {"vmin": vmin}
+        if vmax is not None:
+            kwargs |= {"vmax": vmax}
         c = ax.scatter(
             x,
             y,
@@ -530,13 +575,20 @@ class Plotter:
             transform=cls.orig_projection,
             cmap=cmap,
             zorder=1,
+            **kwargs,
         )
-        kwargs = {}
-        if extend is not None:
-            kwargs = {"extend": extend}
 
-        if not (z == z[0]).all():
-            plt.colorbar(c, **kwargs)  # type:ignore
+        extend = None
+        if vmin is not None:
+            extend = "min"
+            if vmax is not None:
+                extend = "both"
+        if vmax is not None:
+            extend = "max"
+
+        kwargs = {"extend": extend}
+        if draw_colorbar:
+            plt.colorbar(c, **kwargs)  # type: ignore
 
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
@@ -664,3 +716,114 @@ class Plotter:
         if path is not None:
             plt.savefig(cls.add_folder(path), bbox_inches="tight", dpi=dpi)
         return fig, axs
+
+    @classmethod
+    def plot_enkf(
+        cls,
+        ts: np.ndarray,
+        ensembles: np.ndarray,
+        observations: np.ndarray,
+        station_name: str,
+        method_label: str = "EnKF",
+    ) -> None:
+        """Plot the EnKF estimation over time.
+
+        Parameters
+        ----------
+        ts: numpy.ndarray
+            The time axis for the estimated states. Shape: (time,)
+        ensembles: numpy.ndarray
+            The matrix of ensemble estimations. (ensemble, time)
+        observations: numpy.ndarray
+            The matrix of observations. (2, obs_time) where the first row are the
+            observation times and the second row are the observed values.
+        """
+
+        cls.__clear__()
+        cls.__setup_config__()
+
+        estimations = ensembles.mean(axis=0)
+        stds = ensembles.std(axis=0)
+
+        _, ax = plt.subplots(1, 1, figsize=cls.figsize_standard)
+        ax.fill_between(
+            ts,
+            (estimations - stds),  # type: ignore
+            (estimations + stds),  # type: ignore
+            color="b",
+            alpha=cls.bands_alpha,
+            zorder=-1,
+        )
+
+        # Plot filter estimation
+        ax.plot(ts, estimations, "b", label=method_label, zorder=3)
+
+        # Plot actual observations
+        ax.plot(
+            observations[0, :],
+            observations[1, :],
+            "x",
+            markevery=1,
+            markersize=2,
+            color="k",
+            linewidth=1,
+            label="Observations",
+            zorder=2,
+        )
+
+        ax.set_xlabel(cls.t_label)
+        ax.set_ylabel(cls.h_label)
+
+        cls.grid(ax)
+        cls.date_axis(ax)
+        cls.legend(ax)
+
+        name = f"{station_name}_series_{method_label}.pdf"
+        plt.savefig(cls.add_folder(name), bbox_inches="tight")
+
+    @classmethod
+    def hist(
+        cls,
+        data: np.ndarray | list,
+        bins: int | None,
+        path: str | None,
+        xlabel: str | None = None,
+        ylabel: str | None = None,
+        normalize: bool = False,
+    ) -> None:
+        """It plots a histogram with standard formatting.
+
+        Parameters
+        ----------
+        data: numpy.ndarray | list
+            The data to create the histogram of.
+        bins: int | None, optional
+            The number of bins to use. Default: None
+        path: str | None, optional
+            The path to save the figure. Default: None
+        xlabel: str | None, optional
+            The label for the horizontal axis. Default: None
+        ylabel: str | None, optional
+            The label for the vertical axis. Default: None
+        normalize: bool, optional
+            If the histogram should be normalized (density). Default: False
+        """
+
+        cls.__clear__()
+        cls.__setup_config__()
+
+        _, ax = plt.subplots(1, 1, figsize=cls.figsize_standard)
+
+        kwargs = {"color": "skyblue", "ec": "white", "lw": 0.3}
+        if bins is not None:
+            kwargs |= {"bins": bins}
+        ax.hist(data, density=normalize, **kwargs)
+
+        if xlabel is not None:
+            ax.set_xlabel(xlabel)
+        if ylabel is not None:
+            ax.set_ylabel(ylabel)
+        cls.grid(ax)
+
+        if path is not None:
+            plt.savefig(cls.add_folder(path), bbox_inches="tight", dpi=cls.dpi)

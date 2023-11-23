@@ -94,11 +94,11 @@ class Observer:
             The array of station names.
         """
 
-        ys, xs = np.mgrid[y_min : y_max + dy : dy, x_min : x_max + dx : dx]
+        ys, xs = np.mgrid[y_min:y_max:dy, x_min:x_max:dx]
         land = cls.get_land()
         mask = vec.contains(land, xs, ys)
 
-        flat_mask = mask.flatten()
+        flat_mask = (~mask).flatten()
         masked_xs = xs.flatten()[flat_mask].squeeze()
         masked_ys = ys.flatten()[flat_mask].squeeze()
         names = [cls._get_name(x, masked_ys[i]) for i, x in enumerate(masked_xs)]
@@ -109,7 +109,9 @@ class Observer:
 
 
 # # Test
-# xs, ys, mask = Observer.generate_locations(-180, 180, -90, 90, 15, 15, "test.xyn")
-# Plotter.plot_map(
-#     xs, ys, mask, size=10, zorder_land=-1, cmap="bwr", path="land_grid.pdf"
-# )
+xs, ys, mask = Observer.generate_locations(
+    -179.5, 179.5, -60, 60, 16, 16, "./stochModel/input_dflowfm/grid_locs.xyn"
+)
+Plotter.plot_map(
+    xs, ys, mask, size=10, zorder_land=-1, cmap="bwr", path="land_grid.pdf"
+)

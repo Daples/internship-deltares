@@ -106,10 +106,18 @@ def make_noos_observer(
     tree = ET.parse(ctx.obj["template"])
     root = tree.getroot()
     child = root[0]
-    new_child = child
+    new_child = copy.deepcopy(child)
+    root.remove(child)
 
-    for i, noosfile in enumerate(noosfiles):
-        new_child.attrib["location"] = stations[i]
+    for station in stations:
+        # Find the associated noos file
+        noosfile = ""
+        for test_noos in noosfiles:
+            if station in test_noos:
+                noosfile = test_noos
+                break
+
+        new_child.attrib["location"] = station
         new_child.attrib["standardDeviation"] = str(observation_std)
         new_child.text = noosfile
         root.append(new_child)
@@ -127,26 +135,14 @@ def make_noos_observer(
     default=20,
     help="The number of model partitions.",
 )
-@click.argument(
-    "noosfiles",
-    nargs=-1,
-    type=Path(exists=True),
-)
 @click.pass_context
-def make_model(ctx: Context, npart: int, noosfiles: list[str]) -> None:
-    """Creates the model XML configuration file for the given noos files and number of
+def make_model(ctx: Context, npart: int) -> None:
+    """Creates the model XML configuration file for the given xyn file and number of
     partitions."""
 
     ET.register_namespace("", "http://www.openda.org")
 
     stations = ctx.obj["stations"]
-    npart = ctx.obj["npart"]
-
-    # Join path noos_folder/noosfile.noos, as inside stochObserver
-    noosfiles = [
-        os.path.join(ctx.obj["noos_folder"], os.path.basename(noosfile))
-        for noosfile in noosfiles
-    ]
 
     tree = ET.parse(ctx.obj["template"])
     root = tree.getroot()
@@ -200,25 +196,14 @@ def make_model(ctx: Context, npart: int, noosfiles: list[str]) -> None:
     default=20,
     help="The number of model partitions.",
 )
-@click.argument(
-    "noosfiles",
-    nargs=-1,
-    type=Path(exists=True),
-)
 @click.pass_context
-def make_stoch_model(ctx: Context, npart: int, noosfiles: list[str]) -> None:
-    """Creates the stochastic model XML configuration file for the given noos files and
+def make_stoch_model(ctx: Context, npart: int) -> None:
+    """Creates the stochastic model XML configuration file for the given xyn file and
     number of partitions."""
 
     ET.register_namespace("", "http://www.openda.org")
 
     stations = ctx.obj["stations"]
-
-    # Join path noos_folder/noosfile.noos, as inside stochObserver
-    noosfiles = [
-        os.path.join(ctx.obj["noos_folder"], os.path.basename(noosfile))
-        for noosfile in noosfiles
-    ]
 
     tree = ET.parse(ctx.obj["template"])
     root = tree.getroot()
