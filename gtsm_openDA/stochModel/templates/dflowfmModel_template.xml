@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blackBoxModelConfig xmlns="http://www.openda.org" 
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                     xsi:schemaLocation="http://www.openda.org http://schemas.openda.org/blackBoxModelConfig.xsd">
+    <!-- Specify wrapper configuration for which this model is defined -->
+    <wrapperConfig>
+        <file>dflowfmWrapper_TemporalAveraging.xml</file>
+    </wrapperConfig>
+    <!-- Specify wrapper configuration for which this model is defined -->
+    <aliasValues>
+        <alias key="exeDir" value="./bin"/> 
+        <alias key="instanceDir" value="../output/work"/>
+        <alias key="templateDir" value="./input_dflowfm"/>
+        <alias key="outputDir" value="output"/>
+        <alias key="runid" value="gtsm_fine"/>
+        <alias key="mdufile" value="gtsm_fine.mdu"/>
+        <alias key="hisfile" value="gtsm_fine_0000_his.nc"/>
+        <alias key="averaged_hisfile" value="gtsm_fine_0000_averaged_his.nc"/>
+        <alias key="mapfile" value="gtsm_fine_0000_map.nc"/>
+        <alias key="rstfile" value="gtsm_fine_00000000_000000_rst.nc"/>
+        <alias key="meteofile_p" value="airpressure_noise.nc"/>
+	    <alias key="dimrconfigfile" value="dimr_config.xml"/>
+        <alias key="npart" value="20"/>
+	    <alias key="concatenated_hisfile" value="full_gtsm_fine_0000_his.nc"/>
+	    <alias key="concatenated_averaged_hisfile" value="full_gtsm_fine_averaged_0000_his.nc"/>
+	    <alias key="concatenated_mapfile" value="full_gtsm_fine_0000_map.nc"/>
+    </aliasValues>
+    <timeInfoExchangeItems start="start_time" end="end_time"/>
+    <exchangeItems>
+        <vector id="start_time" ioObjectId="mdufile" elementId="start_time" />
+        <vector id="end_time" ioObjectId="mdufile" elementId="end_time" />
+        <vector id="p" ioObjectId="meteofile_p" elementId="p"/>
+    </exchangeItems>
+
+    <doCleanUp>false</doCleanUp>
+
+    <restartInfo dirPrefix="RESTART_">
+        <modelStateFile>gtsm_fine_XXXX_00000000_000000_rst.nc</modelStateFile>
+
+    </restartInfo>
+
+</blackBoxModelConfig>

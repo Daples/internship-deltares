@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='utf-8'?>
+<blackBoxModelConfig xmlns="http://www.openda.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openda.org http://schemas.openda.org/blackBoxModelConfig.xsd">
+		<wrapperConfig>
+			<file>dflowfmWrapper_TemporalAveraging.xml</file>
+		</wrapperConfig>
+		<aliasValues>
+			<alias key="exeDir" value="./bin" />
+			<alias key="instanceDir" value="../output/work" />
+			<alias key="templateDir" value="./input_dflowfm" />
+			<alias key="outputDir" value="output" />
+			<alias key="runid" value="gtsm_fine" />
+			<alias key="mdufile" value="gtsm_fine.mdu" />
+			<alias key="hisfile" value="gtsm_fine_0000_his.nc" />
+			<alias key="averaged_hisfile" value="gtsm_fine_0000_averaged_his.nc" />
+			<alias key="mapfile" value="gtsm_fine_0000_map.nc" />
+			<alias key="rstfile" value="gtsm_fine_00000000_000000_rst.nc" />
+			<alias key="meteofile_p" value="airpressure_noise.nc" />
+			<alias key="dimrconfigfile" value="dimr_config.xml" />
+			<alias key="npart" value="20" />
+			<alias key="concatenated_hisfile" value="full_gtsm_fine_0000_his.nc" />
+			<alias key="concatenated_averaged_hisfile" value="full_gtsm_fine_averaged_0000_his.nc" />
+			<alias key="concatenated_mapfile" value="full_gtsm_fine_0000_map.nc" />
+		</aliasValues>
+		<timeInfoExchangeItems start="start_time" end="end_time" />
+		<exchangeItems>
+			<vector id="start_time" ioObjectId="mdufile" elementId="start_time" />
+			<vector id="end_time" ioObjectId="mdufile" elementId="end_time" />
+			<vector id="p" ioObjectId="meteofile_p" elementId="p" />
+			<vector id="s1_0000" ioObjectId="rstfile" elementId="s1_0000" />
+			<vector id="s1_0001" ioObjectId="rstfile" elementId="s1_0001" />
+			<vector id="s1_0002" ioObjectId="rstfile" elementId="s1_0002" />
+			<vector id="s1_0003" ioObjectId="rstfile" elementId="s1_0003" />
+			<vector id="s1_0004" ioObjectId="rstfile" elementId="s1_0004" />
+			<vector id="s1_0005" ioObjectId="rstfile" elementId="s1_0005" />
+			<vector id="s1_0006" ioObjectId="rstfile" elementId="s1_0006" />
+			<vector id="s1_0007" ioObjectId="rstfile" elementId="s1_0007" />
+			<vector id="s1_0008" ioObjectId="rstfile" elementId="s1_0008" />
+			<vector id="s1_0009" ioObjectId="rstfile" elementId="s1_0009" />
+			<vector id="s1_0010" ioObjectId="rstfile" elementId="s1_0010" />
+			<vector id="s1_0011" ioObjectId="rstfile" elementId="s1_0011" />
+			<vector id="s1_0012" ioObjectId="rstfile" elementId="s1_0012" />
+			<vector id="s1_0013" ioObjectId="rstfile" elementId="s1_0013" />
+			<vector id="s1_0014" ioObjectId="rstfile" elementId="s1_0014" />
+			<vector id="s1_0015" ioObjectId="rstfile" elementId="s1_0015" />
+			<vector id="s1_0016" ioObjectId="rstfile" elementId="s1_0016" />
+			<vector id="s1_0017" ioObjectId="rstfile" elementId="s1_0017" />
+			<vector id="s1_0018" ioObjectId="rstfile" elementId="s1_0018" />
+			<vector id="s1_0019" ioObjectId="rstfile" elementId="s1_0019" />
+			<vector id="lon-179.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-179.5_lat-60.0.waterlevel" />
+			<vector id="lon-149.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-149.5_lat-60.0.waterlevel" />
+			<vector id="lon-119.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-119.5_lat-60.0.waterlevel" />
+			<vector id="lon-89.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-89.5_lat-60.0.waterlevel" />
+			<vector id="lon-59.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-59.5_lat-60.0.waterlevel" />
+			<vector id="lon-29.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-29.5_lat-60.0.waterlevel" />
+			<vector id="lon0.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon0.5_lat-60.0.waterlevel" />
+			<vector id="lon30.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon30.5_lat-60.0.waterlevel" />
+			<vector id="lon60.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon60.5_lat-60.0.waterlevel" />
+			<vector id="lon90.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon90.5_lat-60.0.waterlevel" />
+			<vector id="lon120.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon120.5_lat-60.0.waterlevel" />
+			<vector id="lon150.5_lat-60.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon150.5_lat-60.0.waterlevel" />
+			<vector id="lon-179.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-179.5_lat-30.0.waterlevel" />
+			<vector id="lon-149.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-149.5_lat-30.0.waterlevel" />
+			<vector id="lon-119.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-119.5_lat-30.0.waterlevel" />
+			<vector id="lon-89.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-89.5_lat-30.0.waterlevel" />
+			<vector id="lon-29.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-29.5_lat-30.0.waterlevel" />
+			<vector id="lon0.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon0.5_lat-30.0.waterlevel" />
+			<vector id="lon60.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon60.5_lat-30.0.waterlevel" />
+			<vector id="lon90.5_lat-30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon90.5_lat-30.0.waterlevel" />
+			<vector id="lon-179.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-179.5_lat0.0.waterlevel" />
+			<vector id="lon-149.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-149.5_lat0.0.waterlevel" />
+			<vector id="lon-119.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-119.5_lat0.0.waterlevel" />
+			<vector id="lon-89.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-89.5_lat0.0.waterlevel" />
+			<vector id="lon-29.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-29.5_lat0.0.waterlevel" />
+			<vector id="lon0.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon0.5_lat0.0.waterlevel" />
+			<vector id="lon60.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon60.5_lat0.0.waterlevel" />
+			<vector id="lon90.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon90.5_lat0.0.waterlevel" />
+			<vector id="lon120.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon120.5_lat0.0.waterlevel" />
+			<vector id="lon150.5_lat0.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon150.5_lat0.0.waterlevel" />
+			<vector id="lon-179.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-179.5_lat30.0.waterlevel" />
+			<vector id="lon-149.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-149.5_lat30.0.waterlevel" />
+			<vector id="lon-119.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-119.5_lat30.0.waterlevel" />
+			<vector id="lon-59.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-59.5_lat30.0.waterlevel" />
+			<vector id="lon-29.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon-29.5_lat30.0.waterlevel" />
+			<vector id="lon150.5_lat30.0.waterlevel" ioObjectId="averaged_hisfile" elementId="lon150.5_lat30.0.waterlevel" />
+		</exchangeItems>
+		<doCleanUp>false</doCleanUp>
+		<restartInfo dirPrefix="RESTART_">
+			<modelStateFile>gtsm_fine_0000_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0001_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0002_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0003_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0004_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0005_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0006_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0007_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0008_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0009_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0010_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0011_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0012_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0013_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0014_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0015_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0016_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0017_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0018_00000000_000000_rst.nc</modelStateFile>
+			<modelStateFile>gtsm_fine_0019_00000000_000000_rst.nc</modelStateFile>
+		</restartInfo>
+	</blackBoxModelConfig>

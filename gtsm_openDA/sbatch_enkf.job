@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#SBATCH --nodes=1
+#SBATCH --job-name=EnKF-gtsm
+#SBATCH --tasks-per-node=192
+#SBATCH --time=1-00:00:00
+#SBATCH --partition=genoa
+#SBATCH --exclusive
+##SBATCH --contiguous
+
+module purge
+module load 2022
+module load intel/2022a
+
+root=/home/mverlaan/einf220/fromDavid
+export OPENDADIR=$root/openda_3.1.1/bin/
+export DFLOWFMDIR=$root/delft3dfm_2023.02/
+export PYTHONEXE=~/.conda/envs/cartopy-dev/bin/python
+
+experiment_dir=/scratch-shared/mverlaan/experiment_gtsm
+
+#Copy base configuration to scratch-shared, leave git repository and *.out file out.
+rsync -r --exclude '.git' --exclude '*.out' . $experiment_dir
+
+#Move to scratch drive
+cd $experiment_dir
+
+#Make Pressurenoise
+chmod +x ./make_noise.sh
+./make_noise.sh
+
+#Run OpenDA
+./run_OpenDA.sh biasEnKFThreaded.oda

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openDaApplication  xmlns="http://www.openda.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openda.org http://schemas.openda.org/openDaApplication.xsd">
+	<stochObserver className="org.openda.observers.NoosTimeSeriesStochObserver">
+		<workingDirectory>./stochObserver</workingDirectory>
+		<configFile>noosObservationsAveraged.xml</configFile>
+	</stochObserver>
+	<initialSeed type="fixed" seedValue="0000" />
+        <stochModelFactory className="org.openda.models.threadModel.ThreadStochModelFactory">
+		<workingDirectory>./stochModel</workingDirectory>
+		<configFile>threadedStochModel_TemporalAveraging.xml</configFile>
+	</stochModelFactory>
+	<algorithm className="org.openda.algorithms.kalmanFilter.EnKF">
+		<workingDirectory>./algorithm</workingDirectory>
+		<configString>EnKF.xml</configString>
+	</algorithm>
+
+	<restartOutFilePrefix>rst_</restartOutFilePrefix>
+	<restartOutFileExtension>.zip</restartOutFileExtension>
+	<restartOutFileTimes timeFormat="dateTimeString">201301010000,201302010000,...,201401010000</restartOutFileTimes>
+
+	<!-- <restartOutFileOnlyAtEndOfRun>true</restartOutFileOnlyAtEndOfRun> -->
+
+</openDaApplication>

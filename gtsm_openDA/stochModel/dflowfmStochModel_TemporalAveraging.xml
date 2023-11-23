@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='utf-8'?>
+<blackBoxStochModel xmlns="http://www.openda.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openda.org http://schemas.openda.org/blackBoxStochModelConfig.xsd">
+		<modelConfig>
+			<file>./dflowfmModel_TemporalAveraging.xml</file>
+		</modelConfig>
+		<vectorSpecification>
+			<state>
+				<noiseModel className="org.openda.noiseModels.MapsNoiseModelFactory" id="boundaryNoiseModel" workingDirectory=".">
+					<configFile>2DPressureNoise.xml</configFile>
+					<exchangeItems>
+						<exchangeItem id="2DPressureNoise" allowOverwriteForecastWithAnalysisNoise="true" transformation="set">
+							<modelExchangeItem id="p" />
+						</exchangeItem>
+					</exchangeItems>
+				</noiseModel>
+				<vector id="s1_0000" />
+				<vector id="s1_0001" />
+				<vector id="s1_0002" />
+				<vector id="s1_0003" />
+				<vector id="s1_0004" />
+				<vector id="s1_0005" />
+				<vector id="s1_0006" />
+				<vector id="s1_0007" />
+				<vector id="s1_0008" />
+				<vector id="s1_0009" />
+				<vector id="s1_0010" />
+				<vector id="s1_0011" />
+				<vector id="s1_0012" />
+				<vector id="s1_0013" />
+				<vector id="s1_0014" />
+				<vector id="s1_0015" />
+				<vector id="s1_0016" />
+				<vector id="s1_0017" />
+				<vector id="s1_0018" />
+				<vector id="s1_0019" />
+			</state>
+			<predictor>
+				<vector id="lon-179.5_lat-60.0.waterlevel" />
+				<vector id="lon-149.5_lat-60.0.waterlevel" />
+				<vector id="lon-119.5_lat-60.0.waterlevel" />
+				<vector id="lon-89.5_lat-60.0.waterlevel" />
+				<vector id="lon-59.5_lat-60.0.waterlevel" />
+				<vector id="lon-29.5_lat-60.0.waterlevel" />
+				<vector id="lon0.5_lat-60.0.waterlevel" />
+				<vector id="lon30.5_lat-60.0.waterlevel" />
+				<vector id="lon60.5_lat-60.0.waterlevel" />
+				<vector id="lon90.5_lat-60.0.waterlevel" />
+				<vector id="lon120.5_lat-60.0.waterlevel" />
+				<vector id="lon150.5_lat-60.0.waterlevel" />
+				<vector id="lon-179.5_lat-30.0.waterlevel" />
+				<vector id="lon-149.5_lat-30.0.waterlevel" />
+				<vector id="lon-119.5_lat-30.0.waterlevel" />
+				<vector id="lon-89.5_lat-30.0.waterlevel" />
+				<vector id="lon-29.5_lat-30.0.waterlevel" />
+				<vector id="lon0.5_lat-30.0.waterlevel" />
+				<vector id="lon60.5_lat-30.0.waterlevel" />
+				<vector id="lon90.5_lat-30.0.waterlevel" />
+				<vector id="lon-179.5_lat0.0.waterlevel" />
+				<vector id="lon-149.5_lat0.0.waterlevel" />
+				<vector id="lon-119.5_lat0.0.waterlevel" />
+				<vector id="lon-89.5_lat0.0.waterlevel" />
+				<vector id="lon-29.5_lat0.0.waterlevel" />
+				<vector id="lon0.5_lat0.0.waterlevel" />
+				<vector id="lon60.5_lat0.0.waterlevel" />
+				<vector id="lon90.5_lat0.0.waterlevel" />
+				<vector id="lon120.5_lat0.0.waterlevel" />
+				<vector id="lon150.5_lat0.0.waterlevel" />
+				<vector id="lon-179.5_lat30.0.waterlevel" />
+				<vector id="lon-149.5_lat30.0.waterlevel" />
+				<vector id="lon-119.5_lat30.0.waterlevel" />
+				<vector id="lon-59.5_lat30.0.waterlevel" />
+				<vector id="lon-29.5_lat30.0.waterlevel" />
+				<vector id="lon150.5_lat30.0.waterlevel" />
+			</predictor>
+		</vectorSpecification>
+		<restartInfo dirPrefix="StochModel_RESTART_" />
+	</blackBoxStochModel>

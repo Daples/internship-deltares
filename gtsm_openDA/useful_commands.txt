@@ -1,0 +1,11 @@
+# Construct observer XML from .xyn 
+python utils/xml_builder.py --locs-file stochModel/input_dflowfm/test_xml_locs.xyn --noos-folder noos_data -o noosObservations.xml --template stochObserver/templates/noosObservations_template.xml make-noos-observer stochObserver/noos_data/timeseries_*
+
+# Running average
+python ./stochModel/bin/RunningAverage.py --his_filename_input stochObserver/gtsm_fine_0000_his.nc --his_filename_output stochObserver/gtsm_fine_0000_averaged_his.nc --variable waterlevel --Rolling_Window_Time 1 --Rolling_Window_Unit D
+
+# Make XML model
+python utils/xml_builder.py --locs-file stochModel/input_dflowfm/test_xml_locs.xyn --noos-folder noos_data -o stochModel/model.xml --template stochModel/templates/dflowfmModel_template.xml make-model --npart 20
+
+# Make XML stoch model
+python utils/xml_builder.py --locs-file stochModel/input_dflowfm/test_xml_locs.xyn --noos-folder noos_data -o stochModel/stochModel.xml --template stochModel/templates/dflowfmStochModel_template.xml make-stoch-model --npart 20
