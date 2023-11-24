@@ -17,5 +17,6 @@ extracting observation files (`.noos`) from netCDF data files and all the templa
 OpenDA XML files. GTSM should be included within `stochModel/input_dflowfm`.
 
 This project requires `python3.11`, along with the libraries specified in
-`requirements.txt`. GTSM requires [Delft3D FM](https://www.deltares.nl/en/software-and-data/products/delft3d-flexible-mesh-suite)
+`requirements.txt`, and the latest version of [OpenDA](https://openda.org). Finally,
+GTSM requires [Delft3D FM](https://www.deltares.nl/en/software-and-data/products/delft3d-flexible-mesh-suite)
 to run.
